@@ -1,6 +1,6 @@
 express = require('express');
 path = require ('path');
-mongoose = require('mongoose');
+const mongoose = require('mongoose');
 createError = require('http-errors')
 cors = require('cors');
 bodyParser =require('body-parser');
@@ -9,6 +9,7 @@ require('dotenv').config();
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
+const routes = require('./routes/route');
 
 
 
@@ -41,8 +42,8 @@ app.use(cors({origin: "*"}));
 
 
 //Here we are managing endpoint for access to user model
-const userRoute = require('./routes/route');
-app.use('/api',userRoute);
+
+app.use('/api',routes);
 
 //Here we are managing server's port (using which are giving by the system or 3000)
 const port = process.env.PORT || 3000;
@@ -90,18 +91,33 @@ app.use((err,req,res,next) =>{
   const parser = port2.pipe(new Readline({ delimiter: '\r\n' }))
 //  console.log(parser);
 
+io.on('connection', function(socket){
+
+    socket.on('ledOn', () => {
+        port2.write("H")
+        console.log('LED allumée');
+      });
+
+      socket.on('ledOff', () => {
+        port2.write("L")
+        console.log('LED éteinte');
+      });
+});
+
 
   
 parser.on("data", (data)=>{
   console.log(data);
      io.on('connection', () => {
     io.emit('temp',data)
-    console.log('a user connected');
+
   });
 
 
+ 
     let tempy = data.split('/')
     let temperer = tempy[0]
     let humidy = tempy[1]
+  
                      
 });
