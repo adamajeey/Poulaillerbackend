@@ -4,7 +4,7 @@ const model = require('../model/user')
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const check = require("../middleware/middleware");
-
+const TemperahumSchema = require('../model/temphum')
 const router = express.Router()
 
 module.exports = router;
