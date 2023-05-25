@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const check = require("../middleware/middleware");
 const TemperahumSchema = require('../model/temphum')
 const router = express.Router()
+const heure = require ('../model/heure')
 
 module.exports = router;
 
@@ -157,3 +158,26 @@ router.delete('/delete/:id', check, async (req, res) => {
         return res.status(500).json({ message: error.message })
     }
 })
+
+router.post('/heure', async (req, res) => {
+    
+    //Recupération des donneés en basant  sur le model 
+    console.log(req.body);
+    
+
+    const { heure1, heure2, heure3 } = req.body;
+    const newHeure = heure({
+        heure1, 
+        heure2, 
+        heure3
+    }); 
+    //
+    try { 
+        console.log(req);
+        await newHeure.save();
+        res.status(201).json(newHeure);
+    } catch (error) {
+       
+        res.status(404).json({ message: error.message })
+    } 
+});
