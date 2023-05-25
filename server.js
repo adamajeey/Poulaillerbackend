@@ -183,6 +183,9 @@ io.on('connection', (socket) => {
       });
     }
   });
+// ...
+
+  // ...
 
   socket.on('ledOn', () => {
     port2.write('H');
@@ -213,6 +216,12 @@ io.on('connection', (socket) => {
     port2.write('3');
     console.log('Refroidisseur éteint');
   });
- 
+
+  socket.on('closeDoor', () => {
+    // Code pour envoyer la commande de fermeture de la porte à l'Arduino
+    port2.write('C');
+    console.log('Porte ouverte');
+  });
 });
+
 
